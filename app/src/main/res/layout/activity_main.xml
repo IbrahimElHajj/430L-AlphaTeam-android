@@ -74,5 +74,15 @@
             android:textSize="18sp" />
     </LinearLayout>
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_margin="32dp"
+        android:src="@drawable/baseline_add_24"
+        android:contentDescription="Add Transaction"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

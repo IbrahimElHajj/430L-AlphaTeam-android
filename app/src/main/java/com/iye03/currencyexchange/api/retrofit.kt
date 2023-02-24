@@ -1,10 +1,13 @@
 package com.iye03.currencyexchange.api
 
 import com.iye03.currencyexchange.api.model.ExchangeRates
+import com.iye03.currencyexchange.api.model.Transaction
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.POST
 
 
 object ExchangeService {
@@ -20,5 +23,7 @@ object ExchangeService {
     interface Exchange {
         @GET("/exchangeRate")
         fun getExchangeRates(): Call<ExchangeRates>
+        @POST("/transaction")
+        fun addTransaction(@Body transaction: Transaction): Call<Any>
     }
 }
