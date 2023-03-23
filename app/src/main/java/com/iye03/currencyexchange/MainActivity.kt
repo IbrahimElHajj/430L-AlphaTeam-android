@@ -1,8 +1,11 @@
 package com.iye03.currencyexchange
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.RadioGroup
 import android.widget.TextView
@@ -23,9 +26,11 @@ class MainActivity : AppCompatActivity() {
     private var sellUsdTextView: TextView? = null
     private var fab: FloatingActionButton? = null
     private var transactionDialog: View? = null
+    private var menu: Menu? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Authentication.initialize(this)
         setContentView(R.layout.activity_main)
         buyUsdTextView = findViewById(R.id.txtBuyUsdRate)
         sellUsdTextView = findViewById(R.id.txtSellUsdRate)
@@ -36,6 +41,33 @@ class MainActivity : AppCompatActivity() {
         }
 
         fetchRates()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        this.menu = menu
+        setMenu()
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.login) {
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+        } else if (item.itemId == R.id.register) {
+            val intent = Intent(this, RegistrationActivity::class.java)
+            startActivity(intent)
+        } else if (item.itemId == R.id.logout) {
+            Authentication.clearToken()
+            setMenu()
+        }
+        return true
+    }
+
+
+    private fun setMenu() {
+        menu?.clear()
+        menuInflater.inflate(if(Authentication.getToken() == null)
+            R.menu.menu_logged_out else R.menu.menu_logged_in, menu)
     }
 
     private fun showDialog() {
