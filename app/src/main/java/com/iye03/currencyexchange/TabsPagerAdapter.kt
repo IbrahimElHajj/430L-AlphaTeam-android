@@ -13,12 +13,15 @@ class TabsPagerAdapter(fm: FragmentManager, lifecycle: Lifecycle) :
                 ExchangeFragment()
             }
             1 -> {
+                PriceTraceFragment()
+            }
+            2 -> {
                 TransactionsFragment()
             }
             else -> ExchangeFragment()
         }
     }
     override fun getItemCount(): Int {
-        return 2
+        return 2 + if(Authentication.getToken() != null) 1 else 0;
     }
 }

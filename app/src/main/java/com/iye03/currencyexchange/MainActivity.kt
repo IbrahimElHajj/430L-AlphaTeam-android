@@ -53,8 +53,12 @@ class MainActivity : AppCompatActivity() {
                     tab.text = "Exchange"
                 }
                 1 -> {
+                    tab.text = "Price Trace"
+                }
+                2 -> {
                     tab.text = "Transactions"
                 }
+
             }
         }.attach()
 
