@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="scales">
+        <item>1 Hour</item>
+        <item>3 Hours</item>
+        <item>1 Day</item>
+        <item>3 Days</item>
+        <item>1 Week</item>
+        <item>1 Month</item>
+        <item>3 Months</item>
+        <item>1 Year</item>
+    </string-array>
+</resources>

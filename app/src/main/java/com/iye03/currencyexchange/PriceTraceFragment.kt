@@ -4,15 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 import androidx.fragment.app.Fragment
 
-import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.data.LineData
-import com.github.mikephil.charting.data.LineDataSet
-import com.github.mikephil.charting.data.Entry
-
 class PriceTraceFragment : Fragment() {
-
+    private var scaleSpinner: Spinner? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //TODO: fetch the price list
@@ -23,28 +21,42 @@ class PriceTraceFragment : Fragment() {
         //TODO: fetch the price list
     }
 
+    fun setUpScaleSpinner(){
+        ArrayAdapter.createFromResource(
+            this.requireContext(),
+            R.array.scales,
+            android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            // Specify the layout to use when the list of choices appears
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            // Apply the adapter to the spinner
+            scaleSpinner?.adapter = adapter
+        }
+
+
+        class SpinnerActivity : AdapterView.OnItemSelectedListener {
+
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
+                //change scale in chart
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                // do nothing
+            }
+        }
+
+        scaleSpinner?.onItemSelectedListener = SpinnerActivity()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         var view: View = inflater.inflate(R.layout.fragment_price_trace, container, false)
+        scaleSpinner = view.findViewById(R.id.scale_spinner)
 
-        val lineChart: LineChart = view.findViewById(R.id.lineChart)
-
-        val entries: ArrayList<Entry> = ArrayList()
-        entries.add(Entry(0.0f, 4.0f))
-        entries.add(Entry(1.0f, 2.0f))
-        entries.add(Entry(2.0f, 3.0f))
-        entries.add(Entry(3.0f, 5.0f))
-        entries.add(Entry(4.0f, 1.0f))
-
-        val dataSet = LineDataSet(entries, "Label") // add entries to dataset
-
-        val lineData = LineData(dataSet)
-        lineChart.setData(lineData)
-        lineChart.invalidate() // refresh chart
-
+        setUpScaleSpinner()
 
         return view
     }
