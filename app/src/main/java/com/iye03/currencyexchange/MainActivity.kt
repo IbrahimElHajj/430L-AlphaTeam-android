@@ -1,14 +1,11 @@
 package com.iye03.currencyexchange
 
 import android.content.Intent
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
+import android.view.*
 import android.widget.RadioGroup
-import android.widget.TextView
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -17,7 +14,6 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.android.material.textfield.TextInputLayout
 import com.iye03.currencyexchange.api.ExchangeService
-import com.iye03.currencyexchange.api.model.ExchangeRates
 import com.iye03.currencyexchange.api.model.Transaction
 import retrofit2.Call
 import retrofit2.Callback
@@ -42,7 +38,7 @@ class MainActivity : AppCompatActivity() {
         tabLayout?.tabMode = TabLayout.MODE_FIXED
         tabLayout?.isInlineLabel = true
         // Enable Swipe
-        tabsViewPager?.isUserInputEnabled = true
+        tabsViewPager?.isUserInputEnabled = false
         // Set the ViewPager Adapter
         val adapter = TabsPagerAdapter(supportFragmentManager, lifecycle)
         tabsViewPager?.adapter = adapter
@@ -53,7 +49,7 @@ class MainActivity : AppCompatActivity() {
                     tab.text = "Exchange"
                 }
                 1 -> {
-                    tab.text = "Price Trace"
+                    tab.text = "Statistics"
                 }
                 2 -> {
                     tab.text = "Transactions"
@@ -98,10 +94,12 @@ class MainActivity : AppCompatActivity() {
     private fun showDialog() {
         transactionDialog = LayoutInflater.from(this)
             .inflate(R.layout.dialog_transaction, null, false)
-        MaterialAlertDialogBuilder(this).setView(transactionDialog)
+        MaterialAlertDialogBuilder(this,R.style.AlertDialogTheme)
+            .setView(transactionDialog)
             .setTitle("Add Transaction")
             .setMessage("Enter transaction details")
-            .setPositiveButton("Add") { dialog, _ ->
+            .setPositiveButton("Add")
+            { dialog, _ ->
 
                 val usdAmount = transactionDialog?.findViewById<TextInputLayout>(R.id.txtInptUsdAmount)?.
                 editText?.text.toString()

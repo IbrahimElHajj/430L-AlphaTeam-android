@@ -1,5 +1,7 @@
 <resources>
-    <string name="app_name">Currency Exchange</string>
+    <string name="app_name">
+        <font color="#BC323232">Alpha</font>
+    </string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
