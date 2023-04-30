@@ -16,10 +16,13 @@ import com.iye03.currencyexchange.api.model.Transaction
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.text.SimpleDateFormat
 import java.time.Instant
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
 import java.time.temporal.TemporalAccessor
+import java.util.*
+import kotlin.collections.ArrayList
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -38,7 +41,7 @@ class TransactionsFragment : Fragment() {
 
     private fun fetchTransactions() {
         if (Authentication.getToken() != null) {
-            ExchangeService.exchangeApi()
+            ExchangeService.exchangeApi(this.requireActivity().application)
                 .getTransactions("Bearer ${Authentication.getToken()}")
                 .enqueue(object : Callback<List<Transaction>> {
                     override fun onFailure(call: Call<List<Transaction>>,
@@ -85,6 +88,8 @@ class TransactionsFragment : Fragment() {
         private val inflater: LayoutInflater,
         private val dataSource: List<Transaction>
     ) : BaseAdapter() {
+        val inputDateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
+        val outputDateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
         @RequiresApi(Build.VERSION_CODES.O)
         override fun getView(position: Int, convertView: View?, parent:
         ViewGroup?): View {
@@ -97,7 +102,7 @@ class TransactionsFragment : Fragment() {
             view.findViewById<TextView>(R.id.USD).text =
                 dataSource[position].usdAmount.toString()
             view.findViewById<TextView>(R.id.DATE).text =
-                dataSource[position].addedDate.toString()
+                outputDateFormat.format(inputDateFormat.parse(dataSource[position].addedDate)).toString()
 
             return view
         }

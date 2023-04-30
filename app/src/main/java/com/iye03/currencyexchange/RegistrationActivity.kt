@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.view.WindowManager
 import android.widget.Button
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
@@ -20,6 +21,7 @@ class RegistrationActivity : AppCompatActivity() {
     private var submitButton: Button? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         setContentView(R.layout.activity_registration)
         usernameEditText = findViewById(R.id.txtInptUsername)
         passwordEditText = findViewById(R.id.txtInptPassword)
@@ -30,9 +32,10 @@ class RegistrationActivity : AppCompatActivity() {
     }
     private fun createUser() {
         val user = User()
+        val activity = this
         user.username = usernameEditText?.editText?.text.toString()
         user.password = passwordEditText?.editText?.text.toString()
-        ExchangeService.exchangeApi().addUser(user).enqueue(object :
+        ExchangeService.exchangeApi(this.application).addUser(user).enqueue(object :
             Callback<User> {
             override fun onFailure(call: Call<User>, t: Throwable) {
                 Snackbar.make(
@@ -44,8 +47,9 @@ class RegistrationActivity : AppCompatActivity() {
             }
             override fun onResponse(call: Call<User>, response:
             Response<User>) {
-
-                ExchangeService.exchangeApi().authenticate(user).enqueue(object :
+                if(!response.isSuccessful())
+                    return
+                ExchangeService.exchangeApi(activity.application).authenticate(user).enqueue(object :
                     Callback<Token> {
                     override fun onFailure(call: Call<Token>, t:
                     Throwable) {
@@ -53,6 +57,8 @@ class RegistrationActivity : AppCompatActivity() {
                     }
                     override fun onResponse(call: Call<Token>, response:
                     Response<Token>) {
+                        if(!response.isSuccessful())
+                            return
                         Snackbar.make(
                             submitButton as View,
                             "Account Created.",

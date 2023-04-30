@@ -16,10 +16,11 @@
 
         <TextView
             android:id="@+id/ID"
-            android:layout_width="60sp"
+            android:layout_width="30sp"
             android:layout_height="wrap_content"
             android:text="ID"
             android:textSize="18sp"
+            android:layout_marginHorizontal="5sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/LBP"
             app:layout_constraintStart_toStartOf="parent"
@@ -27,10 +28,12 @@
 
         <TextView
             android:id="@+id/LBP"
-            android:layout_width="130sp"
+            android:layout_width="75sp"
             android:layout_height="wrap_content"
-            android:text="LBP amount"
+            android:text="LBP\namount"
             android:textSize="18sp"
+            android:layout_marginHorizontal="5sp"
+            android:layout_marginBottom="5sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/USD"
             app:layout_constraintStart_toEndOf="@id/ID"
@@ -38,11 +41,12 @@
 
         <TextView
             android:id="@+id/USD"
-            android:layout_width="130sp"
+            android:layout_width="75sp"
             android:layout_height="wrap_content"
-            android:text="USD amount"
+            android:text="USD\namount"
             android:textSize="18sp"
-
+            android:layout_marginHorizontal="5sp"
+            android:layout_marginBottom="5sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/DATE"
             app:layout_constraintStart_toEndOf="@id/LBP"
@@ -50,10 +54,12 @@
 
         <TextView
             android:id="@+id/DATE"
-            android:layout_width="130sp"
+            android:layout_width="100sp"
             android:layout_height="wrap_content"
             android:text="date"
             android:textSize="18sp"
+            android:layout_marginHorizontal="5sp"
+            android:layout_marginBottom="5sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/USD"

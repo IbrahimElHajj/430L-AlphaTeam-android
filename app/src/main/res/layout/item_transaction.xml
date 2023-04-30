@@ -6,9 +6,10 @@
     android:layout_height="match_parent">
     <TextView
         android:id="@+id/ID"
-        android:layout_width="60sp"
+        android:layout_width="30sp"
         android:textSize="16sp"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="5sp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -16,9 +17,10 @@
         />
     <TextView
         android:id="@+id/LBP"
-        android:layout_width="130sp"
+        android:layout_width="75sp"
         android:textSize="16sp"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="5sp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/ID"
@@ -26,9 +28,10 @@
         />
     <TextView
         android:id="@+id/USD"
-        android:layout_width="130sp"
+        android:layout_width="75sp"
         android:textSize="16sp"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="5sp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/LBP"
@@ -36,9 +39,10 @@
         />
     <TextView
         android:id="@+id/DATE"
-        android:layout_width="130sp"
+        android:layout_width="100sp"
         android:textSize="16sp"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="5sp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/USD"

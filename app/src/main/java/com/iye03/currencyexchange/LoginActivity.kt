@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.view.WindowManager
 import android.widget.Button
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
@@ -20,6 +21,7 @@ class LoginActivity : AppCompatActivity() {
     private var submitButton: Button? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         setContentView(R.layout.activity_login)
         usernameEditText = findViewById(R.id.txtInptUsername)
         passwordEditText = findViewById(R.id.txtInptPassword)
@@ -32,7 +34,7 @@ class LoginActivity : AppCompatActivity() {
         val user = User()
         user.username = usernameEditText?.editText?.text.toString()
         user.password = passwordEditText?.editText?.text.toString()
-        ExchangeService.exchangeApi().authenticate(user).enqueue(object :
+        ExchangeService.exchangeApi(this.application).authenticate(user).enqueue(object :
             Callback<Token> {
             override fun onFailure(call: Call<Token>, t: Throwable) {
                 Snackbar.make(
@@ -45,6 +47,10 @@ class LoginActivity : AppCompatActivity() {
             override fun onResponse(call: Call<Token>, response:
             Response<Token>
             ) {
+                if(!response.isSuccessful()) {
+                    onFailure(call,Throwable())
+                    return
+                }
                 Snackbar.make(
                     submitButton as View,
                     "Log In Successful!",
@@ -59,7 +65,7 @@ class LoginActivity : AppCompatActivity() {
     }
     private fun onCompleted() {
         val intent = Intent(this, MainActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED
         startActivity(intent)
     }
 }

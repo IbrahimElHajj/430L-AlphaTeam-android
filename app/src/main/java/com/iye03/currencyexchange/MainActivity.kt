@@ -1,11 +1,13 @@
 package com.iye03.currencyexchange
 
+import Authentication
 import android.content.Intent
-import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.*
 import android.widget.RadioGroup
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -30,6 +32,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         Authentication.initialize(this)
         setContentView(R.layout.activity_main)
 
@@ -40,6 +43,15 @@ class MainActivity : AppCompatActivity() {
         // Enable Swipe
         tabsViewPager?.isUserInputEnabled = false
         // Set the ViewPager Adapter
+        refreshTabs()
+
+        fab = findViewById(R.id.fab)
+        fab?.setOnClickListener { view ->
+            showDialog()
+        }
+    }
+
+    fun refreshTabs(){
         val adapter = TabsPagerAdapter(supportFragmentManager, lifecycle)
         tabsViewPager?.adapter = adapter
 
@@ -57,11 +69,6 @@ class MainActivity : AppCompatActivity() {
 
             }
         }.attach()
-
-        fab = findViewById(R.id.fab)
-        fab?.setOnClickListener { view ->
-            showDialog()
-        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -71,7 +78,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.login) {
+        if (item.itemId == 16908332) {
+            val intent = Intent(this, MainMenu::class.java)
+            startActivity(intent)
+        } else if (item.itemId == R.id.login) {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
         } else if (item.itemId == R.id.register) {
@@ -80,6 +90,7 @@ class MainActivity : AppCompatActivity() {
         } else if (item.itemId == R.id.logout) {
             Authentication.clearToken()
             setMenu()
+            refreshTabs()
         }
         return true
     }
@@ -89,6 +100,8 @@ class MainActivity : AppCompatActivity() {
         menu?.clear()
         menuInflater.inflate(if(Authentication.getToken() == null)
             R.menu.menu_logged_out else R.menu.menu_logged_in, menu)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true);
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.baseline_menu_24);
     }
 
     private fun showDialog() {
@@ -131,7 +144,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun addTransaction(transaction: Transaction) {
 
-        ExchangeService.exchangeApi().addTransaction(transaction,
+        ExchangeService.exchangeApi(this.application).addTransaction(transaction,
             if (Authentication.getToken() != null)
             "Bearer ${Authentication.getToken()}"
         else
@@ -151,5 +164,4 @@ class MainActivity : AppCompatActivity() {
             }
         })
     }
-
 }
