@@ -52,6 +52,9 @@ object ExchangeService {
         fun getTransactions(@Header("Authorization") authorization: String):
                 Call<List<Transaction>>
 
+        @POST("/statistics")
+        fun getStatistics(@Body traceData:TraceList): Call<Statistics>
+
         @POST("/user")
         fun addUser(@Body user:User): Call<User>
 
@@ -60,5 +63,20 @@ object ExchangeService {
 
         @POST("/transaction/datapoints")
         fun getTraceData(@Body traceData:TraceList): Call<TraceList>
+
+        @GET("/news")
+        fun getNews(): Call<List<News>>
+        @POST("/news/post")
+        fun postNews(@Body news: News,@Header("Authorization") authorization: String?): Call<News>
+
+        @POST("/usertransaction")
+        fun addTransactionP2P(@Body transaction: Transaction,
+                           @Header("Authorization") authorization:String?): Call<Any>
+
+        @GET("/usertransaction/list/offers")
+        fun getTransactionsP2P(): Call<List<Transaction>>
+
+        @GET("/usertransaction/list/user")
+        fun getMyTransactionsP2P(@Header("Authorization") authorization: String?): Call<List<Transaction>>
     }
 }

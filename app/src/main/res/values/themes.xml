@@ -25,4 +25,11 @@
     <style name="TabTheme" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <item name="android:textSize">16dp</item>
     </style>
+    <style name="Theme.CurrencyExchange.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <style name="Theme.CurrencyExchange.AppBarOverlay"
+        parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="Theme.CurrencyExchange.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

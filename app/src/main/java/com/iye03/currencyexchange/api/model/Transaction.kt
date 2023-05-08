@@ -14,4 +14,12 @@ class Transaction() {
     var id: Int? = null
     @SerializedName("added_date")
     var addedDate: String? = null
+    @SerializedName("buyer_username")
+    var buyer_username: String? = null
+    @SerializedName("seller_username")
+    var seller_username: String? = null
+    @SerializedName("status")
+    var status: String? = null
+    @SerializedName("seller_phone_number")
+    var seller_phone_number: Int? = null
 }

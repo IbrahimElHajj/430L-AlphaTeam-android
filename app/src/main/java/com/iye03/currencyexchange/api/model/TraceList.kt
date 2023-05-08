@@ -14,4 +14,8 @@ class TraceList() {
     //input
     @SerializedName("timeFormat")
     var timeFormat: String? = null
+    @SerializedName("startDate")
+    var startDate: Long? = null
+    @SerializedName("endDate")
+    var endDate: Long? = null
 }

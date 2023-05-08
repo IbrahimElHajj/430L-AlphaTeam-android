@@ -58,7 +58,7 @@ class LoginActivity : AppCompatActivity() {
                 )
                     .show()
                 response.body()?.token?.let {
-                    Authentication.saveToken(it) }
+                    Authentication.saveToken(response.body()!!) }
                 onCompleted()
             }
         })

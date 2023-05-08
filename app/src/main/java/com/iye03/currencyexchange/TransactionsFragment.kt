@@ -11,6 +11,7 @@ import android.widget.ListView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.iye03.currencyexchange.api.ExchangeService
 import com.iye03.currencyexchange.api.model.Transaction
 import retrofit2.Call
@@ -24,16 +25,6 @@ import java.time.temporal.TemporalAccessor
 import java.util.*
 import kotlin.collections.ArrayList
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [TransactionsFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class TransactionsFragment : Fragment() {
     private var listview: ListView? = null
     private var transactions: ArrayList<Transaction>? = ArrayList()
@@ -74,10 +65,11 @@ class TransactionsFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         val view: View = inflater.inflate(R.layout.fragment_transactions,
             container, false)
+
         listview = view.findViewById(R.id.listview)
         adapter = TransactionAdapter(layoutInflater, transactions!!)
         listview?.adapter = adapter
@@ -90,6 +82,8 @@ class TransactionsFragment : Fragment() {
     ) : BaseAdapter() {
         val inputDateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
         val outputDateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+
+
         @RequiresApi(Build.VERSION_CODES.O)
         override fun getView(position: Int, convertView: View?, parent:
         ViewGroup?): View {
@@ -116,4 +110,5 @@ class TransactionsFragment : Fragment() {
             return dataSource.size
         }
     }
+
 }

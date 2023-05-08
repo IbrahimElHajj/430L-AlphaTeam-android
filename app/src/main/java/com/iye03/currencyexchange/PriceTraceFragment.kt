@@ -1,5 +1,6 @@
 package com.iye03.currencyexchange
 
+import android.content.res.Configuration
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,10 +10,10 @@ import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.switchmaterial.SwitchMaterial
-import com.google.android.material.timepicker.TimeFormat
 import com.iye03.currencyexchange.api.ExchangeService
-import com.iye03.currencyexchange.api.model.ExchangeRates
 import com.iye03.currencyexchange.api.model.TraceList
+import com.iye03.currencyexchange.logic.StatisticsHandler
+import com.iye03.currencyexchange.logic.StatisticsHelper
 import lecho.lib.hellocharts.formatter.SimpleAxisValueFormatter
 import lecho.lib.hellocharts.gesture.ContainerScrollType
 import lecho.lib.hellocharts.model.*
@@ -24,25 +25,17 @@ import java.lang.Math.abs
 import java.text.SimpleDateFormat
 import java.time.Instant
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 class PriceTraceFragment : Fragment() ,SwipeRefreshLayout.OnRefreshListener {
     private var swipeRefreshLayout: SwipeRefreshLayout? = null
     val inputDateFormat = SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z", Locale.getDefault())
 
+    private var stats: StatisticsHandler? = null
+
     private var scaleSpinner: Spinner? = null
     private var priceChart: LineChartView? = null
     private var buySellSwitch: SwitchMaterial? = null
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        //TODO: fetch the price list
-    }
-
-    override fun onResume() {
-        super.onResume()
-        //TODO: fetch the price list
-    }
 
     fun setUpScaleSpinner(){
         val scales = resources.getStringArray(R.array.scales)
@@ -83,6 +76,8 @@ class PriceTraceFragment : Fragment() ,SwipeRefreshLayout.OnRefreshListener {
         val arrayToFill :MutableList<PointValue> = ArrayList<PointValue>()
         val traceData: TraceList = TraceList()
         traceData.timeFormat = timeFormat
+        traceData.startDate = Instant.now().epochSecond
+        traceData.endDate = StatisticsHelper.getStartFromFormat(timeFormat)
         ExchangeService.exchangeApi(this.requireActivity().application).getTraceData(traceData).enqueue(object :
             Callback<TraceList> {
 
@@ -170,16 +165,22 @@ class PriceTraceFragment : Fragment() ,SwipeRefreshLayout.OnRefreshListener {
 
         val data = LineChartData()
         data.lines = lines
-        
+
+        val nightModeFlags = resources.configuration.uiMode and
+                Configuration.UI_MODE_NIGHT_MASK
+        val isNightMode = nightModeFlags == Configuration.UI_MODE_NIGHT_YES
+
         val axisX = Axis(axisLabels)
         axisX.setName("time")
-        axisX.textColor = Color.parseColor("#BC323232")
+        if(!isNightMode)
+            axisX.textColor = Color.parseColor("#BC323232")
         data.axisXBottom = axisX
 
         val axisY = Axis()
         axisY.formatter = SimpleAxisValueFormatter(0)
         axisY.setName("Price of 1 USD  in Thousand LBP")
-        axisY.textColor = Color.parseColor("#BC323232")
+        if(!isNightMode)
+            axisY.textColor = Color.parseColor("#BC323232")
         data.axisYLeft = axisY
 
         priceChart?.setLineChartData(data)
@@ -209,6 +210,9 @@ class PriceTraceFragment : Fragment() ,SwipeRefreshLayout.OnRefreshListener {
         priceChart?.setZoomEnabled(true)
         priceChart?.setContainerScrollEnabled(true, ContainerScrollType.HORIZONTAL)
 
+        stats = StatisticsHandler(view,this.requireActivity().application)
+        stats?.refresh(scaleSpinner?.selectedItem)
+
         setUpSwitch()
 
         setUpScaleSpinner()
@@ -218,6 +222,7 @@ class PriceTraceFragment : Fragment() ,SwipeRefreshLayout.OnRefreshListener {
 
     override fun onRefresh() {
         processChart()
+        stats?.refresh(scaleSpinner?.selectedItem)
         swipeRefreshLayout?.setRefreshing(false)
     }
 }

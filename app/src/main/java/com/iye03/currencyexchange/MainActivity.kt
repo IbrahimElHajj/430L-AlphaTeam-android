@@ -153,7 +153,8 @@ class MainActivity : AppCompatActivity() {
             Callback<Any> {
             override fun onResponse(call: Call<Any>, response:
             Response<Any>) {
-                Snackbar.make(fab as View, "Transaction added!",
+                if(response.isSuccessful())
+                    Snackbar.make(fab as View, "Transaction added!",
                     Snackbar.LENGTH_LONG)
                     .show()
             }
