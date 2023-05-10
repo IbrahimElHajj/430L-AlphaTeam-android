@@ -85,7 +85,7 @@ class MyP2POptions : Fragment() {
         @RequiresApi(Build.VERSION_CODES.O)
         override fun getView(position: Int, convertView: View?, parent:
         ViewGroup?): View {
-            val view: View = inflater.inflate(R.layout.item_transactionP2P,
+            val view: View = inflater.inflate(R.layout.item_transaction,
                 parent, false)
             view.findViewById<TextView>(R.id.ID).text =
                 dataSource[position].id.toString()
